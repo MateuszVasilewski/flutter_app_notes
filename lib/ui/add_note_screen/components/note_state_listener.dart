@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bloc/note/note_bloc.dart';
+import 'package:flutter_app/bloc/note_add/add_note_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NoteStateListener extends StatelessWidget {
@@ -9,23 +9,23 @@ class NoteStateListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<NoteBloc, NoteState>(
+    return BlocListener<AddNoteCubit, AddNoteState>(
       listenWhen: _listenWhen,
       listener: _listener,
       child: child,
     );
   }
 
-  bool _listenWhen(NoteState previous, NoteState current) =>
-      current is AddingNoteError || current is NotesLoaded;
+  bool _listenWhen(AddNoteState previous, AddNoteState current) =>
+      current is NoteAdded || current is AddingNoteError;
 
-  void _listener(BuildContext context, NoteState state) {
+  void _listener(BuildContext context, AddNoteState state) {
     if (state is AddingNoteError) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Something went wrong'),
       ));
     }
-    if (state is NotesLoaded) {
+    if (state is NoteAdded) {
       Navigator.of(context).pop();
     }
   }

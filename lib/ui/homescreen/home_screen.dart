@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bloc/note/note_bloc.dart';
+import 'package:flutter_app/bloc/note_display/note_display_cubit.dart';
 import 'file:///C:/Projects/power_quotes/flutter_app/lib/ui/homescreen/components/home_body/home_body.dart';
 import 'package:flutter_app/ui/homescreen/components/home_error.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,8 +14,7 @@ class HomeScreen extends StatelessWidget {
         title: const Text("Notes"),
       ),
 
-      body: BlocBuilder<NoteBloc, NoteState>(
-          buildWhen: _buildWhen,
+      body: BlocBuilder<NoteDisplayCubit, NoteDisplayState>(
           builder: (context, state){
             if(state is NotesLoaded){
               return HomeBody(loadedState: state);
@@ -23,11 +22,9 @@ class HomeScreen extends StatelessWidget {
             if(state is NotesLoadingError){
               return const HomeError();
             }
-
-            if(state is NoteInitial) {
-              BlocProvider.of<NoteBloc>(context).add(LoadNotesEvent());
+            if(state is NoteDisplayInitial) {
+              BlocProvider.of<NoteDisplayCubit>(context).loadAllNotes();
             }
-
             return const Center(child: CircularProgressIndicator());
           }
       ),
@@ -38,9 +35,4 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-
-  bool _buildWhen(NoteState previous, NoteState current) =>
-    current is NotesLoading ||
-    current is NotesLoadingError ||
-    current is NotesLoaded;
 }

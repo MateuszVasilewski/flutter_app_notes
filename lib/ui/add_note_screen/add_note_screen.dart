@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bloc/note/note_bloc.dart';
+import 'package:flutter_app/bloc/note_add/add_note_cubit.dart';
 import 'package:flutter_app/ui/add_note_screen/components/add_note_appbar/add_note_appbar.dart';
 import 'package:flutter_app/ui/add_note_screen/components/note_state_listener.dart';
 import 'package:flutter_app/utils/input_decoration.dart';
@@ -25,11 +25,9 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AddNoteAppbar(
-        onPlusTap: () {
-          BlocProvider.of<NoteBloc>(context)
-              .add(AddNoteEvent(_controller.text));
-          _controller.clear();
-        },
+        onPlusTap: () => BlocProvider.of<AddNoteCubit>(context)
+                .addNote(_controller.text, DateTime.now())
+                .then((value) => _controller.clear()),
       ),
       body: NoteStateListener(
         child: Padding(
@@ -40,10 +38,6 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
               decoration: inputDecoration,
               minLines: 3,
               maxLines: null,
-              onSubmitted: (String value) {
-                BlocProvider.of<NoteBloc>(context).add(AddNoteEvent(value));
-                _controller.clear();
-              },
             ),
           ),
         ),

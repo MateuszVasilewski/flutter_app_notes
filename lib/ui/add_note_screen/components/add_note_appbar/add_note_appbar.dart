@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bloc/note/note_bloc.dart';
-import 'file:///C:/Projects/power_quotes/flutter_app/lib/ui/add_note_screen/components/add_note_appbar/components/add_note_button.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_app/ui/add_note_screen/components/add_note_appbar/components/add_note_button.dart';
 
 class AddNoteAppbar extends StatelessWidget implements PreferredSizeWidget{
   final Function onPlusTap;
